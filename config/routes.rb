@@ -1,18 +1,23 @@
-Calagator::Application.routes.draw do
-  match 'omfg' => 'site#omfg'
-  match 'hello' => 'site#hello'
+Calagator::Engine.routes.draw do
+  get 'omfg' => 'site#omfg'
+  get 'hello' => 'site#hello'
 
-  match 'about' => 'site#about'
+  get 'about' => 'site#about'
 
-  match 'opensearch.:format' => 'site#opensearch'
-  match 'defunct' => 'site#defunct'
+  get 'opensearch.:format' => 'site#opensearch'
+  get 'defunct' => 'site#defunct'
+
+  get 'admin' => 'admin#index'
+  get "admin/index"
+  get "admin/events"
+  post "lock_event" => "admin#lock_event"
 
   resources :events do
     collection do
       post :squash_many_duplicates
       get :search
       get :duplicates
-      match 'tag/:tag', {:via => :get, :to => :search }
+      get 'tag/:tag', action: :search, as: :tag
     end
 
     member do
@@ -32,20 +37,27 @@ Calagator::Application.routes.draw do
       get :map
       get :duplicates
       get :autocomplete
-      match 'tag/:tag', {:via => :get, :to => :index }
+      get 'tag/:tag', action: :index, as: :tag
     end
   end
 
   resources :versions, :only => [:edit]
-  resources :changes, :controller => 'paper_trail_manager/changes'
-  match 'recent_changes' => redirect("/changes")
-  match 'recent_changes.:format' => redirect("/changes.%{format}")
 
-  match 'css/:name' => 'site#style'
-  match 'css/:name.:format' => 'site#style'
+  # Rails 4.0 prevents referencing controllers outside of the Calagator namespace.
+  # Work around this by aliasing PaperTrailManager inside Calagator:
+  Calagator::PaperTrailManager ||= ::PaperTrailManager
+  resources :changes, controller: 'paper_trail_manager/changes'
 
-  match '/' => 'site#index', :as => :root
-  match '/index' => 'site#index'
-  match '/index.:format' => 'site#index'
+  # In Rails 4.1+, we could use a leading slash to the controller path:
+  # resources :changes, controller: '/paper_trail_manager/changes'
 
+  get 'recent_changes' => redirect("/changes")
+  get 'recent_changes.:format' => redirect("/changes.%{format}")
+
+  get 'css/:name' => 'site#style'
+  get 'css/:name.:format' => 'site#style'
+
+  get '/' => 'site#index', :as => :root
+  get '/index' => 'site#index'
+  get '/index.:format' => 'site#index'
 end

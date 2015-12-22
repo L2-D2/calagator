@@ -1,6 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/calagator.svg)](http://badge.fury.io/rb/calagator)
 [![Build Status](https://travis-ci.org/calagator/calagator.svg?branch=master)](http://travis-ci.org/calagator/calagator)
-[![Code Climate](https://codeclimate.com/github/calagator/calagator.png)](https://codeclimate.com/github/calagator/calagator)
-[![Coverage Status](https://coveralls.io/repos/calagator/calagator/badge.png)](https://coveralls.io/r/calagator/calagator)
+[![Code Climate](https://codeclimate.com/github/calagator/calagator/badges/gpa.svg)](https://codeclimate.com/github/calagator/calagator)
+[![Coverage Status](https://coveralls.io/repos/calagator/calagator/badge.svg)](https://coveralls.io/r/calagator/calagator)
 [![Dependency Status](https://gemnasium.com/calagator/calagator.svg)](https://gemnasium.com/calagator/calagator)
 
 
@@ -27,12 +28,6 @@ Why
 By releasing this code under a liberal MIT open source license, we hope to empower other people so they can better organize and participate in more events that support free sharing of information, open society, and involved citizenry.
 
 
-Releases
---------
-
-The stable releases of this software are tagged with version numbers, such as `v0.20090416`, that represent the date they were made. There is also a `stable` branch that points to the current stable release. The [CHANGES.md](http://github.com/calagator/calagator/blob/master/CHANGES.md) file describes significant changes made between stable releases.
-
-
 Installing
 ----------
 
@@ -57,10 +52,10 @@ This free, open source software was made possible by a group of volunteers that 
 License
 -------
 
-This program is provided under an MIT open source license, read the [LICENSE.txt](http://github.com/calagator/calagator/blob/master/LICENSE.txt) file for details.
+This program is provided under an MIT open source license, read the [MIT-LICENSE.txt](http://github.com/calagator/calagator/blob/master/MIT-LICENSE.txt) file for details.
 
 
 Copyright
 ---------
 
-Copyright (c) 2007-2014 Calagator
+Copyright (c) 2007-2015 Calagator

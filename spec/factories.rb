@@ -1,5 +1,7 @@
+require "faker"
+
 FactoryGirl.define do
-  factory :venue do
+  factory :venue, class: Calagator::Venue do
     sequence(:title) { |n| "Venue #{n}" }
     sequence(:description) { |n| "Description of Venue #{n}." }
     sequence(:address) { |n| "Address #{n}" }
@@ -16,24 +18,46 @@ FactoryGirl.define do
     closed false
     wifi true
     access_notes "Access permitted."
+    after(:create) { Sunspot.commit if Calagator::Venue::SearchEngine.kind == :sunspot }
 
-    after(:create) { Sunspot.commit if Venue::SearchEngine.kind == :sunspot }
+    trait :with_multiple_tags do
+      after(:create) { |venue| venue.update_attributes(tag_list: 'tag1, tag2') }
+    end
   end
 
-  factory :event do
+  factory :event, class: Calagator::Event do
     sequence(:title) { |n| "Event #{n}" }
     sequence(:description) { |n| "Description of Event #{n}." }
-    start_time { Time.now + 1.hour }
+    start_time { Time.zone.now.beginning_of_day }
     end_time { start_time + 1.hour }
+    after(:create) { Sunspot.commit if Calagator::Event::SearchEngine.kind == :sunspot }
 
-    after(:create) { Sunspot.commit if Event::SearchEngine.kind == :sunspot }
+    trait :with_venue do
+      association :venue
+    end
+
+    trait :with_multiple_tags do
+      after(:create) { |event| event.update_attributes(tag_list: 'tag1, tag2') }
+    end
+
+    trait :with_source do
+      association :source
+      sequence(:description) do |n| 
+        "Description of Event #{n}.\n
+        http://test.com\n
+        http://example.com\n
+        http://google.com\n
+        http://yahoo.com"
+      end
+    end
   end
 
-  factory :event_with_venue, :parent => :event do
-    association :venue
+  factory :duplicate_event, parent: :event do
+    association :duplicate_of, factory: :event
   end
 
-  factory :duplicate_event, :parent => :event do
-    association :duplicate_of, :factory => :event
+  factory :source, class: Calagator::Source do
+    sequence(:title) { |n| "Source #{n}" }
+    url { "http://example.com" }
   end
 end
